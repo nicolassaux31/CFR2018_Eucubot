@@ -1,4 +1,4 @@
-Salut, ceci est un test
+Bonjour, ceci est un test
 
 changement 1
 
