@@ -1,0 +1,321 @@
+COMANDOS ÚTILES:TODOS LOS COMANDOS VAN PRECEDIDOS POR "---"
+LOS COMANDOS QUE HE CONSIDERADO OBVIOS NO ESTÁN COMENTADOS
+
+---cd /rutadirectoriorepositorio
+
+lleva el terminal a la ruta del directorio
+
+---clear
+
+borra del terminal todos los comandos que se han introducido
+
+---git init
+
+inicializa el repositorio si es que no se ha hecho ya (el nuestro ya sta
+pero por si acaso se le da qe no cambia nada)
+
+---git help
+
+	---git help comando
+---ls
+
+muestra todos los archivos del directorio de trabajo (no del repositorio
+ni local ni de la web).
+
+
+STAGES
+
+
+---git add <archivo>
+
+Añade un archivo a la lista de archivos que quieres cambiar definitivamente
+y que posteriormente guardarás/sobreescribirás en tu repositorio LOCAL.(Stage)
+
+	---git add *.formato
+
+	Misma funcion que el anterior para todos los archivos del directorio
+	que tengan este formato
+
+---git add .
+
+Añade todos los archivos del directorio local al Staged Area
+
+---git reset HEAD archivo
+
+Quita un archivo de la staged area
+
+---git diff
+
+Muestra los archivos que se han cambiado y que no han sido añadidos a la lista
+de futuros commits (staged area). Además muestra el contenido de dichos cambios
+
+---git diff --cached
+
+Muestra los archivos que se han cambiado y que si han sido añadidos a la lista
+de futuros commits (Staged)
+
+--git status
+
+Muestra los archivos que están en la Staged area o que han sido cambiados pero que
+no han sido staged
+
+REVENIR AU PASSÉ
+
+---git checkout commit/branche
+
+---git checkout commit fichier.format
+
+Met dans la master présente la version du fichier quil y avait
+juste apres le commit choisi. Si l'on veut la sauvegarder on 
+commite, si l'on veut revenir à celle qu'il y avait sur la master
+on fait checkout master. 
+
+---git revert commit
+
+Supprime les modifs de ce commit
+	---git revert commit fichier
+	Supprime les modifs de ce commit sur ce fichier
+
+---git reset HEAD nombrearchivo.formato
+
+Borra del stage el archivo elegido 
+
+---git reset --archivo.formato
+
+Borra las modificaciones del archivo elegido
+
+---git reset --hard
+
+Borra todas las modificaciones
+
+---git reset commit
+
+Borra todos los commits hechos hasta el elegido, manteniendo los
+archivos con todas las modificaciones realizadas desde entonces (aunque 
+teniendo que stagearlas). 
+
+
+REMISAGE
+
+---git stash 
+
+Sauvegarde toutes les modifs en "pile", pour que l'on puisse faire d'autre choses
+pour plus tard revenir sur ces modifs sauvegardées. 
+Permet aussi changer de branches malgré les modifs. en cours
+
+	---git stash list
+	---git stash -u 
+	Sauvegarde aussi les fichiers créés. 
+	---git stash apply
+	Re-applique les modifs sauvegardée sans les supprimer du stash
+	---git stash drop
+	Supprime les derniers éléments stockés
+	---git stash save Description
+	Donne un nom à cette sauvegarde en stach
+	---git stash show Description  (on rajoute -p pour plus de détail)
+	Montre le stash sauvegardé sous ce nom
+	---git stash apply Description
+	---git stash pop Description 
+	Applique et droppe
+	---git stash branch NomBranche
+	Crée une branche avec les modifs sauvegardées en stash
+
+
+
+COMMITS
+
+
+---git commit <archivo>
+
+Abre un archivo de texto en el mismo BASH en el que se puede editar el
+mensaje descriptivo del commit (cambio) que se está guardando en el 
+repositorio LOCAL. Para editar dicho archivo se tienen varios comandos:
+	---i
+	permite escribir sobre el archivo
+	---:wq
+	guarda el archivo de texto y realiza el commit
+
+Estando en el modo edición del archivo de texto del commit, se vuelve
+a la línea de comandos pulsando Esc.
+
+---git commit -a -m 'Mensaje'
+
+Guarda un commit (cambio) directamente sin abrir el archivo de texto correspondiente
+con el título incluido en el Mensaje. 
+
+---git commit --ammend
+
+Permite cambiar el texto del último commit
+
+
+BRANCHES
+
+---git branch nom
+
+---git merge nombranche
+
+Rassemble la branche sur celle dans laquelle on se trouve tout en faisant un commit
+Si on ne veut pas de commit (pour d'abbord résoudre le conflit à la main):
+	---git merge --no-ff nombranche
+
+---git rebase master
+
+Envoie les commits de la branche sur laquelle ons e trouve sur master
+Si ensuite on fait un merge, on aura les commits de la branche sur l'historique
+du master (comme s'il n'y avait jamais eu de branche) 
+
+REMOVE
+
+
+---git rm archivo
+
+Borra el archivo del directorio de trabajo (no del repositorio local ni del online). Si
+el archivo está staged (se le ha dado un Add previamente) no te dejará hacerlo pero
+se puede forzar.
+	
+
+	---git rm -f archivo
+	fuerza la eliminación de un archivo, esté staged o no
+
+	---git rm --cached archivo
+	elimina un archivo de la staging area. Es decir, el archivo permanece en el 
+	repositorio local pero ya no se guardará en el repositorio si se hace un commit
+
+
+LOGS
+
+
+---git log
+
+Muestra todos los commits realizados en orden cronológico inverso, incluyendo sus textos
+descriptivos.
+
+	---git log --pretty=oneline
+	Muestra todos los commits realizados en orden cronológico inverso (solo título)
+	y referencia
+
+	---git log --pretty=format:"%h ::: %an ::: %ar ::: %s"
+	Muestra todos los commits realizados en orden cronológico inverso con el siguiente
+	formato: Referencia acotada : Nombre del responsable : fecha : título
+
+	---git log -p -n
+	Siendo n unHa entero positivo, muestra los n últimos commits realizados.
+
+	---git log --since=n.weeks
+	Siendo n un entero positivo muestra los commits realizados durante las n
+	últimas semanas
+
+	---git log --since="AAAA-MM-DD"
+	Muestra los commits realizados desde la fecha indicada
+
+	---git log --author="Nombre"
+	Muestra los commits realizados por esa persona
+	
+	---git log --before="AAAA-MM-DD"
+
+---gitk 
+
+Muestra la evolución de las ramas
+
+
+REPOSITORIO REMOTO ("origin")
+
+---git push
+
+Guarda todos los commits (cambios) realizados localmente en el servidor remoto. 
+
+---git push origin master
+
+Almacena tu copia del repositorio (repositorio local) en el remoto.
+
+---git remote -v
+
+Muestra la lista de servidores (o repositorios online) a los que he conectado mi repositorio
+local, junto con sus respectivas URL.
+
+---git pull URL(fetch)
+
+Hace una copia del repositorio web en el repositorio local. 
+
+---git pull --rebase origin master
+
+Merge la branche master du serveur sur la master locale en incluant
+ses commits sur les tiens comme si c'était toi qui les avait fait
+
+	---git config --global branch.autosetuprebase always
+	Impose le rebase sur tous les pulls
+
+
+---git remote rename origin Nombre
+
+Cambia el nombre que tu GIT le ha puesto al repositorio remoto (yo le puse CleanCycle)
+
+
+TAGS: anotaciones que se pueden hacer a cada commit relizadoen cualquier punto de la historia
+del repositorio. 
+
+---git tag
+
+Muestra los nombres de todas las notas hechas hasta ahora.
+
+---git tag -a Nombre -m 'Mensaje'
+
+Pone una nota al último commit realizado 
+
+---git show Nombre
+
+Muestra el contenido de la nota con ese nombre
+
+---git tag -a Nombre Referencia
+
+Pone una nota de nombre Nombre al commit de referencia Referencia (que se puede
+consultar con git log).Aparece un editor de texto del que se sale pulsando
+Esq --> wq --> Enter
+
+
+---git push CleanCycle Nombre
+
+Almacena la nota de nombre Nombre en el repositorio web.
+
+	---git push CleanCycle --tags
+	Almacena todas las notas en el repositorio web.
+
+
+ALIAS: sirven para acortar el comando a emplear para hacer una determinada cosa.
+Por ejemplo, cambio puede ser un alias para git commit.
+
+---git config --global alias.Etiqueta Comando
+
+Pone el alias Etiqueta a un determinado Comando.
+
+DIRECTORIOS
+
+---mkdir Nombre
+Crea un directorio en tu workspace.
+
+---cd Nombre
+Se va a ese directorio.
+
+CLONAR REPOSITORIOS
+
+A)Buscamos un repositorio cualquiera en github.com (Explore). 
+
+B)Entramos en el repositorio elegido desde la página y clickamos Fork.
+
+C)Copiamos HTTPS clone URL
+
+D) volvemos a GITBASH y ponemos ---git clone URL
+
+
+TRUQUITOS
+
+
+---ctrl+R
+
+Permite buscar comandos anteriores: le das y escribes el comando que quieres
+
+---ctrl+shift+V    o    ---ctrl+shift+C
+
+Pegar o Copiar
+
+
