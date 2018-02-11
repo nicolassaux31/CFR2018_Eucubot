@@ -228,6 +228,10 @@ Guarda todos los commits (cambios) realizados localmente en el servidor remoto.
 
 Almacena tu copia del repositorio (repositorio local) en el remoto.
 
+---git push origin --all
+
+Écrit tout sur le serveur à distance
+
 ---git remote -v
 
 Muestra la lista de servidores (o repositorios online) a los que he conectado mi repositorio
