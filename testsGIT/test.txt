@@ -8,3 +8,5 @@ eee
 changement branche 1
 
 test2
+
+Je rajoute des lignes pour corriger bug signalé
