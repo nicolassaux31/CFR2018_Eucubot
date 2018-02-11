@@ -254,6 +254,9 @@ ses commits sur les tiens comme si c'était toi qui les avait fait
 
 Cambia el nombre que tu GIT le ha puesto al repositorio remoto (yo le puse CleanCycle)
 
+---git push origin --delete NomBranche
+
+Supprime la branche de remote (si on l'a supprimée en local préalablement)
 
 TAGS: anotaciones que se pueden hacer a cada commit relizadoen cualquier punto de la historia
 del repositorio. 
