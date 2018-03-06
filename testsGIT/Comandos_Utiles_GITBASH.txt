@@ -1,132 +1,75 @@
-COMANDOS ÚTILES:TODOS LOS COMANDOS VAN PRECEDIDOS POR "---"
-LOS COMANDOS QUE HE CONSIDERADO OBVIOS NO ESTÁN COMENTADOS
+LES LIGNES DANS LESQUELES J'INDIQUE DES COMMANDES
+COMMENCENT TOUTES PAR "---" mais cela ne fait pas partie des commandes
 
----cd /rutadirectoriorepositorio
+NAVIGATION (à travers les dossiers)
 
-lleva el terminal a la ruta del directorio
+---cd /adresseprojetlocal
+
+dirige la ligne de commandes vers ce dossier sur windows cette adresse
+peut être copiée de la barre de l'explorer en changeant les \ par /.
 
 ---clear
 
-borra del terminal todos los comandos que se han introducido
+vide la ligne de commandes (clc sur matlab)
+
+---mkdir nomdossier
+
+Crée un dossier 
+
+---touch fichiercode.format
+
+crée un fichier du format indiqué dans le repertoire dans lequel on se trouve
 
 ---git init
 
-inicializa el repositorio si es que no se ha hecho ya (el nuestro ya sta
-pero por si acaso se le da qe no cambia nada)
+Initialise le versionning sur le dossier dans lequel on se trouve
 
 ---git help
 
-	---git help comando
+	---git help commande
 ---ls
 
-muestra todos los archivos del directorio de trabajo (no del repositorio
-ni local ni de la web).
+montre tous les fichiers et dossiers existants dans le dossier actuel
 
 
-STAGES
+STAGES: Ajout de fichiers/dossiers à la liste de modifications réalisées
+que l'on voudra sauvegarder (Staged Area)
 
 
----git add <archivo>
+---git add <fichier>
 
-Añade un archivo a la lista de archivos que quieres cambiar definitivamente
-y que posteriormente guardarás/sobreescribirás en tu repositorio LOCAL.(Stage)
+Ajoute un fichier à la liste de fichiers modifiés que l'on veut sauvegarder..
 
-	---git add *.formato
+	---git add *.format
 
-	Misma funcion que el anterior para todos los archivos del directorio
-	que tengan este formato
+	Ajoute tous les fichiers avec ce format à la liste.
 
 ---git add .
 
-Añade todos los archivos del directorio local al Staged Area
+Ajoute tousles fichiers du dossier dans lequel on se trouve à la liste
 
----git reset HEAD archivo
+---git reset HEAD fichier
 
-Quita un archivo de la staged area
+Enlève ce fichier de la liste
 
 ---git diff
 
-Muestra los archivos que se han cambiado y que no han sido añadidos a la lista
-de futuros commits (staged area). Además muestra el contenido de dichos cambios
+Montre tous les fichiers qui ont étés modifiés et qui n'ont pas été ajoutés à la liste
+et le contenu de ces modification. 
 
 ---git diff --cached
 
-Muestra los archivos que se han cambiado y que si han sido añadidos a la lista
-de futuros commits (Staged)
+Montre les fichiers qui ont étés modifiés et qui ont été ajoutés à la liste
 
 --git status
 
-Muestra los archivos que están en la Staged area o que han sido cambiados pero que
-no han sido staged
+Fait les deux commandes d'avant. 
 
-REVENIR AU PASSÉ
+COMMITS (sauvegardes de changements) 
 
----git checkout commit/branche
+---git commit <fichier>
 
----git checkout commit fichier.format
-
-Met dans la master présente la version du fichier quil y avait
-juste apres le commit choisi. Si l'on veut la sauvegarder on 
-commite, si l'on veut revenir à celle qu'il y avait sur la master
-on fait checkout master. 
-
----git revert commit
-
-Supprime les modifs de ce commit
-	---git revert commit fichier
-	Supprime les modifs de ce commit sur ce fichier
-
----git reset HEAD nombrearchivo.formato
-
-Borra del stage el archivo elegido 
-
----git reset --archivo.formato
-
-Borra las modificaciones del archivo elegido
-
----git reset --hard
-
-Borra todas las modificaciones
-
----git reset commit
-
-Borra todos los commits hechos hasta el elegido, manteniendo los
-archivos con todas las modificaciones realizadas desde entonces (aunque 
-teniendo que stagearlas). 
-
-
-REMISAGE
-
----git stash 
-
-Sauvegarde toutes les modifs en "pile", pour que l'on puisse faire d'autre choses
-pour plus tard revenir sur ces modifs sauvegardées. 
-Permet aussi changer de branches malgré les modifs. en cours
-
-	---git stash list
-	---git stash -u 
-	Sauvegarde aussi les fichiers créés. 
-	---git stash apply
-	Re-applique les modifs sauvegardée sans les supprimer du stash
-	---git stash drop
-	Supprime les derniers éléments stockés
-	---git stash save Description
-	Donne un nom à cette sauvegarde en stach
-	---git stash show Description  (on rajoute -p pour plus de détail)
-	Montre le stash sauvegardé sous ce nom
-	---git stash apply Description
-	---git stash pop Description 
-	Applique et droppe
-	---git stash branch NomBranche
-	Crée une branche avec les modifs sauvegardées en stash
-
-
-
-COMMITS
-
-
----git commit <archivo>
-
+Sauvegarde le changement réalisé sur tel fichier
 Abre un archivo de texto en el mismo BASH en el que se puede editar el
 mensaje descriptivo del commit (cambio) que se está guardando en el 
 repositorio LOCAL. Para editar dicho archivo se tienen varios comandos:
@@ -216,6 +159,67 @@ descriptivos.
 ---gitk 
 
 Muestra la evolución de las ramas
+
+REMISAGE
+
+---git stash 
+
+Sauvegarde toutes les modifs en "pile", pour que l'on puisse faire d'autre choses
+pour plus tard revenir sur ces modifs sauvegardées. 
+Permet aussi changer de branches malgré les modifs. en cours
+
+	---git stash list
+	---git stash -u 
+	Sauvegarde aussi les fichiers créés. 
+	---git stash apply
+	Re-applique les modifs sauvegardée sans les supprimer du stash
+	---git stash drop
+	Supprime les derniers éléments stockés
+	---git stash save Description
+	Donne un nom à cette sauvegarde en stach
+	---git stash show Description  (on rajoute -p pour plus de détail)
+	Montre le stash sauvegardé sous ce nom
+	---git stash apply Description
+	---git stash pop Description 
+	Applique et droppe
+	---git stash branch NomBranche
+	Crée une branche avec les modifs sauvegardées en stash
+
+REVENIR AU PASSÉ
+
+---git checkout commit/branche
+
+
+---git checkout commit fichier.format
+
+Met dans la master présente la version du fichier quil y avait
+juste apres le commit choisi. Si l'on veut la sauvegarder on 
+commite, si l'on veut revenir à celle qu'il y avait sur la master
+on fait checkout master. 
+
+---git revert commit
+
+Supprime les modifs de ce commit
+	---git revert commit fichier
+	Supprime les modifs de ce commit sur ce fichier
+
+---git reset HEAD nombrearchivo.formato
+
+Borra del stage el archivo elegido 
+
+---git reset --archivo.formato
+
+Borra las modificaciones del archivo elegido
+
+---git reset --hard
+
+Borra todas las modificaciones
+
+---git reset commit
+
+Borra todos los commits hechos hasta el elegido, manteniendo los
+archivos con todas las modificaciones realizadas desde entonces (aunque 
+teniendo que stagearlas). 
 
 
 REPOSITORIO REMOTO ("origin")
