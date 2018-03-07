@@ -69,7 +69,7 @@ COMMITS (sauvegardes de changements)
 
 ---git commit <fichier>
 
-Sauvegarde le changement réalisé sur tel fichier
+Sauvegarde le changement réalisé sur tel fichier 
 Abre un archivo de texto en el mismo BASH en el que se puede editar el
 mensaje descriptivo del commit (cambio) que se está guardando en el 
 repositorio LOCAL. Para editar dicho archivo se tienen varios comandos:
