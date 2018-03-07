@@ -65,35 +65,34 @@ Montre les fichiers qui ont étés modifiés et qui ont été ajoutés à la liste
 
 Fait les deux commandes d'avant. 
 
+
 COMMITS (sauvegardes de changements) 
 
----git commit <fichier>
+---git commit
 
-Sauvegarde le changement réalisé sur tel fichier 
-Abre un archivo de texto en el mismo BASH en el que se puede editar el
-mensaje descriptivo del commit (cambio) que se está guardando en el 
-repositorio LOCAL. Para editar dicho archivo se tienen varios comandos:
+Pour sauvegarder tous les changements qui sont dans le Stage en ouvrant un éditeur de texte pour décrire ces changements
+Quelques commandes de l'éditeur
 	---i
-	permite escribir sobre el archivo
+	permet de commencer à écrire
+	---Esc
+	sort du mode édition
 	---:wq
-	guarda el archivo de texto y realiza el commit
+	Sauvegarde l'édition et réalise le commit
 
-Estando en el modo edición del archivo de texto del commit, se vuelve
-a la línea de comandos pulsando Esc.
 
----git commit -a -m 'Mensaje'
+---git commit -a -m 'message'
 
-Guarda un commit (cambio) directamente sin abrir el archivo de texto correspondiente
-con el título incluido en el Mensaje. 
+Stage tous les éléments modifiés (comme si on faisait git add .) et réalise en commit avec le message introduit
 
 ---git commit --ammend
 
-Permite cambiar el texto del último commit
+Permet de changer le texte du commit précédent
 
 
 BRANCHES
 
 ---git branch nom
+crée une branche avec ce nom
 
 ---git merge nombranche
 
@@ -108,7 +107,6 @@ Si ensuite on fait un merge, on aura les commits de la branche sur l'historique
 du master (comme s'il n'y avait jamais eu de branche) 
 
 REMOVE
-
 
 ---git rm archivo
 
@@ -222,7 +220,7 @@ archivos con todas las modificaciones realizadas desde entonces (aunque
 teniendo que stagearlas). 
 
 
-REPOSITORIO REMOTO ("origin")
+REMOTE ("origin")
 
 ---git push
 
@@ -262,6 +260,8 @@ Cambia el nombre que tu GIT le ha puesto al repositorio remoto (yo le puse Clean
 
 Supprime la branche de remote (si on l'a supprimée en local préalablement)
 
+
+
 TAGS: anotaciones que se pueden hacer a cada commit relizadoen cualquier punto de la historia
 del repositorio. 
 
@@ -299,13 +299,7 @@ Por ejemplo, cambio puede ser un alias para git commit.
 
 Pone el alias Etiqueta a un determinado Comando.
 
-DIRECTORIOS
 
----mkdir Nombre
-Crea un directorio en tu workspace.
-
----cd Nombre
-Se va a ese directorio.
 
 CLONAR REPOSITORIOS
 
