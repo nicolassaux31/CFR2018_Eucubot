@@ -1,0 +1,19 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP LM2596
+D LM2596 SIMPLE SWITCHER ® Power Converter 150 kHz 3A Step-Down Voltage Regulator
+K Buck Step-down regulator
+F http://www.ti.com/lit/ds/symlink/lm2596.pdf
+$ENDCMP
+#
+$CMP ST1S10
+D 3 A, 900 kHz, monolithic synchronous step-down regulator IC
+K Step Down Switch Mode Power Supply SMPS
+F http://www.st.com/content/ccc/resource/technical/document/datasheet/fb/03/25/5a/eb/45/46/33/CD00169322.pdf/files/CD00169322.pdf/jcr:content/translations/en.CD00169322.pdf
+$CMP LTC3612-TSSOP
+D The LTC3612 is a low quiescent current monolithic synchronous buck regulator using a current mode, constant frequency architecture.
+K regulator, dc-dc
+F http://cds.linear.com/docs/en/datasheet/3612fc.pdf
+$ENDCMP
+#
+#End Doc Library

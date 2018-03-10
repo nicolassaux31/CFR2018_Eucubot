@@ -1,0 +1,13 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP Dual_Pot_ALPS
+D Dual Potentionmeter
+K resistor variable
+$ENDCMP
+#
+$CMP POT_Dual
+D Dual Potentionmeter
+K resistor variable
+$ENDCMP
+#
+#End Doc Library

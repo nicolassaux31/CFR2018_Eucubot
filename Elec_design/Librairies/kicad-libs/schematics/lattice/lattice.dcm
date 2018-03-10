@@ -1,0 +1,15 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP LCMXO2-1200HC-4SG32C
+D Lattice MachXO2 FPGA
+K Lattice MachXO2 FPGA
+F http://www.latticesemi.com/~/media/LatticeSemi/Documents/DataSheets/MachXO23/MachXO2FamilyDataSheet.pdf?document_id=38834
+$ENDCMP
+#
+$CMP LFXP2-5E-6TN144C
+D Lattice XP2-5E FPGA (TQFP144, Speedgrade -6)
+K Lattice XP2 FPGA PLD
+F http://www.latticesemi.com/en/Products/FPGAandCPLD/LatticeXP2.aspx
+$ENDCMP
+#
+#End Doc Library

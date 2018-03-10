@@ -1,0 +1,62 @@
+PCBNEW-LibModule-V1  15/12/2014 09:32:32
+# encoding utf-8
+Units mm
+$INDEX
+Support_pile
+$EndINDEX
+$MODULE Support_pile
+Po 0 0 0 15 548E98FB 00000000 ~~
+Li Support_pile
+Sc 0
+AR 
+Op 0 0 0
+T0 5.1181 12.4333 1 1 0 0.15 N V 21 N "Support_pile"
+T1 5.2959 8.5217 1 1 0 0.15 N V 21 N "VAL**"
+DS -5.55498 50.89144 18.288 50.88382 0.15 21
+DS -5.55498 -3.00482 18.28546 -3.02006 0.15 21
+DS -5.55498 -3 -5.55498 50.88328 0.15 21
+DS 18.288 -3 18.288 50.88328 0.15 21
+$PAD
+Sh "1" R 3.5 3.5 0 0 0
+Dr 1.91 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 0 0
+$EndPAD
+$PAD
+Sh "2" C 3.5 3.5 0 0 0
+Dr 1.91 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 13.70076 0
+$EndPAD
+$PAD
+Sh "" C 3.3 3.3 0 0 0
+Dr 3.3 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 18.26514 7.62
+$EndPAD
+$PAD
+Sh "" C 3.3 3.3 0 0 0
+Dr 3.3 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -5.56514 7.62
+$EndPAD
+$PAD
+Sh "" C 3.3 3.3 0 0 0
+Dr 3.3 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 18.26514 29.85262
+$EndPAD
+$PAD
+Sh "" C 3.3 3.3 0 0 0
+Dr 3.3 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -5.56514 29.84754
+$EndPAD
+$EndMODULE Support_pile
+$EndLIBRARY

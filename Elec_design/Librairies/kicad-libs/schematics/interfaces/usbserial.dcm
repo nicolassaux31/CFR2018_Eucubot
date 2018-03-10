@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP ch340g
+D CH340G USB to UART Interface
+K WCH CH340 Series USB Interface Integrated Circuit
+F http://www.foxdelta.com/products/ST2-0816/ch340g.pdf
+$ENDCMP
+#
+#End Doc Library
