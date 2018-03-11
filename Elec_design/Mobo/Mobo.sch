@@ -1039,12 +1039,12 @@ Wire Wire Line
 $Comp
 L Conn_01x05 J8
 U 1 1 5A96C536
-P 975 2550
-F 0 "J8" H 975 2850 50  0000 C CNN
-F 1 "Conn_01x05" H 975 2250 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x05_Pitch2.54mm" H 975 2550 50  0001 C CNN
-F 3 "" H 975 2550 50  0001 C CNN
-	1    975  2550
+P 975 2475
+F 0 "J8" H 975 2775 50  0000 C CNN
+F 1 "Conn_01x05" H 975 2175 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x05_Pitch2.54mm" H 975 2475 50  0001 C CNN
+F 3 "" H 975 2475 50  0001 C CNN
+	1    975  2475
 	-1   0    0    1   
 $EndComp
 $Comp
@@ -1059,10 +1059,10 @@ F 3 "" H 975 3225 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
-	1175 2350 1175 2750
-Connection ~ 1175 2450
-Connection ~ 1175 2550
-Connection ~ 1175 2650
+	1175 2275 1175 2675
+Connection ~ 1175 2375
+Connection ~ 1175 2475
+Connection ~ 1175 2575
 Wire Wire Line
 	1175 3025 1175 3425
 Connection ~ 1175 3125
@@ -1070,6 +1070,6 @@ Connection ~ 1175 3225
 Connection ~ 1175 3325
 Text Label 1175 3075 0    60   ~ 0
 GND
-Text Label 1175 2400 0    60   ~ 0
+Text Label 1175 2325 0    60   ~ 0
 5V
 $EndSCHEMATC

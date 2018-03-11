@@ -31,6 +31,8 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
+LIBS:Librairie_Olivier
+LIBS:shield_arduino
 LIBS:Mobo-cache
 EELAYER 25 0
 EELAYER END
@@ -1040,7 +1042,7 @@ U 1 1 5A96C536
 P 975 2550
 F 0 "J8" H 975 2850 50  0000 C CNN
 F 1 "Conn_01x05" H 975 2250 50  0000 C CNN
-F 2 "" H 975 2550 50  0001 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x05_Pitch2.54mm" H 975 2550 50  0001 C CNN
 F 3 "" H 975 2550 50  0001 C CNN
 	1    975  2550
 	-1   0    0    1   
@@ -1051,7 +1053,7 @@ U 1 1 5A96C682
 P 975 3225
 F 0 "J17" H 975 3525 50  0000 C CNN
 F 1 "Conn_01x05" H 975 2925 50  0000 C CNN
-F 2 "" H 975 3225 50  0001 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x05_Pitch2.54mm" H 975 3225 50  0001 C CNN
 F 3 "" H 975 3225 50  0001 C CNN
 	1    975  3225
 	-1   0    0    1   
