@@ -65,7 +65,7 @@ U 1 1 5A74E859
 P 3350 1550
 F 0 "D1" H 3350 1650 50  0000 C CNN
 F 1 "LED" H 3350 1450 50  0000 C CNN
-F 2 "LEDs:LED_D3.0mm" H 3350 1550 50  0001 C CNN
+F 2 "LEDs:LED_D5.0mm" H 3350 1550 50  0001 C CNN
 F 3 "" H 3350 1550 50  0001 C CNN
 	1    3350 1550
 	0    -1   -1   0   
@@ -135,7 +135,7 @@ U 1 1 5A7520DB
 P 1750 1000
 F 0 "SW1" H 1750 1170 50  0000 C CNN
 F 1 "SW_Push_SPDT" H 1750 800 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x03_Pitch2.54mm" H 1750 1000 50  0001 C CNN
+F 2 "mylib:Conn_1x3_3.81" H 1750 1000 50  0001 C CNN
 F 3 "" H 1750 1000 50  0001 C CNN
 	1    1750 1000
 	-1   0    0    1   
@@ -906,54 +906,16 @@ Text Label 1100 7700 0    60   ~ 0
 5V
 Text Label 6750 1300 0    60   ~ 0
 5V
-$Comp
-L Conn_01x04 J15
-U 1 1 5A848CA3
-P 5000 7150
-F 0 "J15" H 5000 7350 50  0000 C CNN
-F 1 "Conn_01x04" H 5000 6850 50  0000 C CNN
-F 2 "mylib:conn_4_3.81" H 5000 7150 50  0001 C CNN
-F 3 "" H 5000 7150 50  0001 C CNN
-	1    5000 7150
-	1    0    0    -1  
-$EndComp
-$Comp
-L Conn_01x04 J16
-U 1 1 5A848D53
-P 5700 7150
-F 0 "J16" H 5700 7350 50  0000 C CNN
-F 1 "Conn_01x04" H 5700 6850 50  0000 C CNN
-F 2 "mylib:conn_4_3.81" H 5700 7150 50  0001 C CNN
-F 3 "" H 5700 7150 50  0001 C CNN
-	1    5700 7150
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4800 7050 4800 6850
-Wire Wire Line
-	4800 6850 5500 6850
-Wire Wire Line
-	5500 6850 5500 7050
-Wire Wire Line
-	4800 7350 4800 7550
-Wire Wire Line
-	4800 7550 5500 7550
-Wire Wire Line
-	5500 7550 5500 7350
-Text Label 5150 6850 0    60   ~ 0
-6V
-Text Label 5150 7550 0    60   ~ 0
-GND
-Text Label 4800 7150 2    60   ~ 0
-50
-Text Label 4800 7250 2    60   ~ 0
+Text Label 4825 6400 2    60   ~ 0
 52
-Text Label 5500 7150 2    60   ~ 0
-36
-Text Label 5500 7250 2    60   ~ 0
-34
-Text Notes 4750 6650 0    60   ~ 0
-Alim et encodeur MCC
+Text Label 4825 6500 2    60   ~ 0
+50
+Text Label 5800 6400 2    60   ~ 0
+22
+Text Label 5800 6500 2    60   ~ 0
+24
+Text Notes 4950 5900 0    60   ~ 0
+Connectique Moteurs DC
 Text Notes 1600 5800 0    60   ~ 0
 Connecteurs servomoteurs
 Text Notes 1700 7000 0    60   ~ 0
@@ -1016,7 +978,7 @@ U 1 1 5A84D05A
 P 2200 1000
 F 0 "SW2" H 2250 1100 50  0000 L CNN
 F 1 "ARU" H 2200 940 50  0000 C CNN
-F 2 "mylib:conn_01x02_5.08" H 2200 1200 50  0001 C CNN
+F 2 "mylib:conn_2_5.08" H 2200 1200 50  0001 C CNN
 F 3 "" H 2200 1200 50  0001 C CNN
 	1    2200 1000
 	1    0    0    -1  
@@ -1039,12 +1001,12 @@ Wire Wire Line
 $Comp
 L Conn_01x05 J8
 U 1 1 5A96C536
-P 975 2550
-F 0 "J8" H 975 2850 50  0000 C CNN
-F 1 "Conn_01x05" H 975 2250 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x05_Pitch2.54mm" H 975 2550 50  0001 C CNN
-F 3 "" H 975 2550 50  0001 C CNN
-	1    975  2550
+P 975 2475
+F 0 "J8" H 975 2775 50  0000 C CNN
+F 1 "Conn_01x05" H 975 2175 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x05_Pitch2.54mm" H 975 2475 50  0001 C CNN
+F 3 "" H 975 2475 50  0001 C CNN
+	1    975  2475
 	-1   0    0    1   
 $EndComp
 $Comp
@@ -1059,10 +1021,10 @@ F 3 "" H 975 3225 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
-	1175 2350 1175 2750
-Connection ~ 1175 2450
-Connection ~ 1175 2550
-Connection ~ 1175 2650
+	1175 2275 1175 2675
+Connection ~ 1175 2375
+Connection ~ 1175 2475
+Connection ~ 1175 2575
 Wire Wire Line
 	1175 3025 1175 3425
 Connection ~ 1175 3125
@@ -1070,6 +1032,118 @@ Connection ~ 1175 3225
 Connection ~ 1175 3325
 Text Label 1175 3075 0    60   ~ 0
 GND
-Text Label 1175 2400 0    60   ~ 0
+Text Label 1175 2325 0    60   ~ 0
 5V
+$Comp
+L Conn_01x06 J19
+U 1 1 5AA54919
+P 6100 6600
+F 0 "J19" H 6100 6900 50  0000 C CNN
+F 1 "Conn_01x06" H 6100 6200 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x06_Pitch2.00mm" H 6100 6600 50  0001 C CNN
+F 3 "" H 6100 6600 50  0001 C CNN
+	1    6100 6600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Conn_01x06 J16
+U 1 1 5AA549C1
+P 5125 6600
+F 0 "J16" H 5125 6900 50  0000 C CNN
+F 1 "Conn_01x06" H 5125 6200 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x06_Pitch2.00mm" H 5125 6600 50  0001 C CNN
+F 3 "" H 5125 6600 50  0001 C CNN
+	1    5125 6600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Conn_01x02 J18
+U 1 1 5AA54AED
+P 5575 6900
+F 0 "J18" H 5575 7000 50  0000 C CNN
+F 1 "Conn_01x02" H 5575 6700 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm" H 5575 6900 50  0001 C CNN
+F 3 "" H 5575 6900 50  0001 C CNN
+	1    5575 6900
+	-1   0    0    1   
+$EndComp
+$Comp
+L Conn_01x02 J15
+U 1 1 5AA54EB0
+P 4475 6900
+F 0 "J15" H 4475 7000 50  0000 C CNN
+F 1 "Conn_01x02" H 4475 6700 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm" H 4475 6900 50  0001 C CNN
+F 3 "" H 4475 6900 50  0001 C CNN
+	1    4475 6900
+	-1   0    0    1   
+$EndComp
+Wire Notes Line
+	4050 5975 6800 5975
+Text Notes 4150 7150 0    60   ~ 0
+From Shield A
+Text Notes 4575 6150 0    60   ~ 0
+Vers Moteur A
+Text Notes 5650 6150 0    60   ~ 0
+Vers Moteur B
+Text Notes 5275 7175 0    60   ~ 0
+From Shield B
+Wire Wire Line
+	4925 6400 4825 6400
+Wire Wire Line
+	4825 6500 4925 6500
+Wire Wire Line
+	5900 6400 5800 6400
+Wire Wire Line
+	5800 6500 5900 6500
+Wire Wire Line
+	4925 6800 4675 6800
+Wire Wire Line
+	4675 6900 4925 6900
+Wire Wire Line
+	5775 6800 5900 6800
+Wire Wire Line
+	5900 6900 5775 6900
+Text Label 4925 6700 2    60   ~ 0
+5V
+Text Label 5900 6700 2    60   ~ 0
+5V
+Text Label 4925 6600 2    60   ~ 0
+GND
+Text Label 5900 6600 2    60   ~ 0
+GND
+Wire Notes Line
+	6800 7250 4050 7250
+Wire Notes Line
+	4050 7250 4050 5975
+Wire Notes Line
+	6800 5975 6800 7250
+$Comp
+L LED D2
+U 1 1 5AA591B4
+P 8625 6200
+F 0 "D2" H 8625 6300 50  0000 C CNN
+F 1 "LED" H 8625 6100 50  0000 C CNN
+F 2 "LEDs:LED_D5.0mm" H 8625 6200 50  0001 C CNN
+F 3 "" H 8625 6200 50  0001 C CNN
+	1    8625 6200
+	-1   0    0    1   
+$EndComp
+$Comp
+L R R2
+U 1 1 5AA59255
+P 8225 6200
+F 0 "R2" V 8305 6200 50  0000 C CNN
+F 1 "R" V 8225 6200 50  0000 C CNN
+F 2 "Resistors_THT:R_Axial_DIN0411_L9.9mm_D3.6mm_P15.24mm_Horizontal" V 8155 6200 50  0001 C CNN
+F 3 "" H 8225 6200 50  0001 C CNN
+	1    8225 6200
+	0    -1   -1   0   
+$EndComp
+Text Label 8775 6200 0    60   ~ 0
+GND
+Text Label 8075 6200 2    60   ~ 0
+23
+Wire Wire Line
+	8375 6200 8475 6200
 $EndSCHEMATC

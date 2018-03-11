@@ -1,0 +1,355 @@
+Cmp-Mod V01 Created by PcbNew   date = 11/03/2018 19:15:42
+
+BeginCmp
+TimeStamp = 5A7501F5
+Path = /5A74E403
+Reference = SH1;
+ValeurCmp = ARDUINO_MEGA;
+IdModule  = SHIELD_ARDUINO:ARDUINO_MEGA_2560_R3_CONTOUR_ELL;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A75019B
+Path = /5A74FBC2
+Reference = R1;
+ValeurCmp = 820;
+IdModule  = Resistors_THT:R_Axial_DIN0411_L9.9mm_D3.6mm_P15.24mm_Horizontal;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A75C5A2
+Path = /5A74E940
+Reference = J1;
+ValeurCmp = 6V_secteur;
+IdModule  = Connectors:BARREL_JACK;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A75C5B3
+Path = /5A75BEBF
+Reference = JAnalogIn1;
+ValeurCmp = Conn_01x08;
+IdModule  = Socket_Strips:Socket_Strip_Straight_1x08_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A75C5BF
+Path = /5A75BE76
+Reference = JAnalogIn2;
+ValeurCmp = Conn_01x08;
+IdModule  = Socket_Strips:Socket_Strip_Straight_1x08_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A75C5CB
+Path = /5A75BDF1
+Reference = JComm1;
+ValeurCmp = Conn_01x08;
+IdModule  = Socket_Strips:Socket_Strip_Straight_1x08_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A75C5E1
+Path = /5A75C5C5
+Reference = JDigital1;
+ValeurCmp = Conn_01x18;
+IdModule  = Socket_Strips:Socket_Strip_Straight_1x18_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A75C5F7
+Path = /5A75C569
+Reference = JDigital2;
+ValeurCmp = Conn_01x18;
+IdModule  = Socket_Strips:Socket_Strip_Straight_1x18_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A75C60F
+Path = /5A75BD90
+Reference = JPWM2;
+ValeurCmp = Conn_01x08;
+IdModule  = Socket_Strips:Socket_Strip_Straight_1x08_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A84B452
+Path = /5A84D50B
+Reference = F1;
+ValeurCmp = Fuse;
+IdModule  = Resistors_THT:R_Axial_Power_L25.0mm_W6.4mm_P30.48mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A84B4C0
+Path = /5A840E9D
+Reference = Jalim1;
+ValeurCmp = Conn_01x08;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x08_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A84B4C1
+Path = /5A84070C
+Reference = JPWM1;
+ValeurCmp = Conn_01x10;
+IdModule  = Socket_Strips:Socket_Strip_Straight_1x10_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A84B4DB
+Path = /5A840AE7
+Reference = JShield1;
+ValeurCmp = Conn_01x10;
+IdModule  = Socket_Strips:Socket_Strip_Straight_1x10_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A84B4E7
+Path = /5A840BEE
+Reference = Jshield2;
+ValeurCmp = Conn_01x08;
+IdModule  = Socket_Strips:Socket_Strip_Straight_1x08_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A84B4F3
+Path = /5A841682
+Reference = Jshield3;
+ValeurCmp = Conn_01x08;
+IdModule  = Socket_Strips:Socket_Strip_Straight_1x08_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A84B4FD
+Path = /5A84178B
+Reference = Jshield4;
+ValeurCmp = Conn_01x06;
+IdModule  = Socket_Strips:Socket_Strip_Straight_1x06_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A8D7FDB
+Path = /5A74F1DE
+Reference = C1;
+ValeurCmp = 10µF;
+IdModule  = Capacitors_THT:C_Rect_L7.0mm_W2.0mm_P5.00mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A9EFE66
+Path = /5A96C536
+Reference = J8;
+ValeurCmp = Conn_01x05;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x05_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A9EFE6F
+Path = /5A96C682
+Reference = J17;
+ValeurCmp = Conn_01x05;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x05_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA54386
+Path = /5AA54EB0
+Reference = J15;
+ValeurCmp = Conn_01x02;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA5438B
+Path = /5AA549C1
+Reference = J16;
+ValeurCmp = Conn_01x06;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x06_Pitch2.00mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA54399
+Path = /5AA54AED
+Reference = J18;
+ValeurCmp = Conn_01x02;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA543A3
+Path = /5AA54919
+Reference = J19;
+ValeurCmp = Conn_01x06;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x06_Pitch2.00mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA612BC
+Path = /5A7520DB
+Reference = SW1;
+ValeurCmp = SW_Push_SPDT;
+IdModule  = mylib:Conn_1x3_3.81;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A84B47C
+Path = /5A844763
+Reference = J9;
+ValeurCmp = Conn_01x03;
+IdModule  = mylib:Conn_1x3_3.81;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A84B475
+Path = /5A84493D
+Reference = J7;
+ValeurCmp = Conn_01x03;
+IdModule  = mylib:Conn_1x3_3.81;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A84B46E
+Path = /5A844937
+Reference = J6;
+ValeurCmp = Conn_01x03;
+IdModule  = mylib:Conn_1x3_3.81;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A84B467
+Path = /5A844931
+Reference = J5;
+ValeurCmp = Conn_01x03;
+IdModule  = mylib:Conn_1x3_3.81;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A84B460
+Path = /5A8446BF
+Reference = J4;
+ValeurCmp = Conn_01x03;
+IdModule  = mylib:Conn_1x3_3.81;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A84B459
+Path = /5A84464A
+Reference = J3;
+ValeurCmp = Conn_01x03;
+IdModule  = mylib:Conn_1x3_3.81;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A84B4A4
+Path = /5A847228
+Reference = J14;
+ValeurCmp = Conn_01x04;
+IdModule  = mylib:conn_4_3.81;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A84B49C
+Path = /5A8474F6
+Reference = J13;
+ValeurCmp = Conn_01x04;
+IdModule  = mylib:conn_4_3.81;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A84B494
+Path = /5A847481
+Reference = J12;
+ValeurCmp = Conn_01x04;
+IdModule  = mylib:conn_4_3.81;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A84B48C
+Path = /5A847411
+Reference = J11;
+ValeurCmp = Conn_01x04;
+IdModule  = mylib:conn_4_3.81;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A84B484
+Path = /5A847392
+Reference = J10;
+ValeurCmp = Conn_01x04;
+IdModule  = mylib:conn_4_3.81;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA67237
+Path = 
+Reference = REF**;
+ValeurCmp = 1pin;
+IdModule  = Connectors:1pin;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA6723F
+Path = 
+Reference = REF**;
+ValeurCmp = 1pin;
+IdModule  = Connectors:1pin;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA674D7
+Path = 
+Reference = REF**;
+ValeurCmp = 1pin;
+IdModule  = Connectors:1pin;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA674DF
+Path = 
+Reference = REF**;
+ValeurCmp = 1pin;
+IdModule  = Connectors:1pin;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A8D7FE0
+Path = /5A74E6B7
+Reference = J2;
+ValeurCmp = Conn_batterie6V;
+IdModule  = mylib:conn_2_5.08;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA69771
+Path = /5A84D05A
+Reference = SW2;
+ValeurCmp = ARU;
+IdModule  = mylib:conn_2_5.08;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA6B6B9
+Path = /5AA591B4
+Reference = D2;
+ValeurCmp = LED;
+IdModule  = LEDs:LED_D5.0mm;
+EndCmp
+
+BeginCmp
+TimeStamp = 5AA6B6CF
+Path = /5AA59255
+Reference = R2;
+ValeurCmp = R;
+IdModule  = Resistors_THT:R_Axial_DIN0411_L9.9mm_D3.6mm_P15.24mm_Horizontal;
+EndCmp
+
+BeginCmp
+TimeStamp = 5A75017C
+Path = /5A74E859
+Reference = D1;
+ValeurCmp = LED;
+IdModule  = LEDs:LED_D3.0mm;
+EndCmp
+
+EndListe
