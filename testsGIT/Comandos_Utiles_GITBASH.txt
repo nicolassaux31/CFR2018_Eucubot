@@ -32,6 +32,7 @@ Initialise le versionning sur le dossier dans lequel on se trouve
 montre tous les fichiers et dossiers existants dans le dossier actuel
 
 
+
 STAGES: Ajout de fichiers/dossiers à la liste de modifications réalisées
 que l'on voudra sauvegarder (Staged Area)
 
@@ -46,7 +47,7 @@ Ajoute un fichier à la liste de fichiers modifiés que l'on veut sauvegarder..
 
 ---git add .
 
-Ajoute tousles fichiers du dossier dans lequel on se trouve à la liste
+Ajoute tous les fichiers du dossier dans lequel on se trouve à la liste
 
 ---git reset HEAD fichier
 
@@ -106,21 +107,21 @@ Envoie les commits de la branche sur laquelle ons e trouve sur master
 Si ensuite on fait un merge, on aura les commits de la branche sur l'historique
 du master (comme s'il n'y avait jamais eu de branche) 
 
+
+
 REMOVE
 
 ---git rm archivo
 
-Borra el archivo del directorio de trabajo (no del repositorio local ni del online). Si
-el archivo está staged (se le ha dado un Add previamente) no te dejará hacerlo pero
-se puede forzar.
+Efface ce fichier du workspace. Si le fichier a été staged (add), pas possible
 	
 
-	---git rm -f archivo
-	fuerza la eliminación de un archivo, esté staged o no
+	---git rm -f fichier
+	Force l'élimination du fichier même s'il est staged (add). 
 
-	---git rm --cached archivo
-	elimina un archivo de la staging area. Es decir, el archivo permanece en el 
-	repositorio local pero ya no se guardará en el repositorio si se hace un commit
+	---git rm --cached fichier
+	Efface ce fichier de la zone staged --> il est toujours existant mais il ne 
+	sera pas sauvegardé en cas de commit. 
 
 
 LOGS
@@ -128,35 +129,35 @@ LOGS
 
 ---git log
 
-Muestra todos los commits realizados en orden cronológico inverso, incluyendo sus textos
-descriptivos.
+Montre tous les commits réalisés par ordre chrono, en incluant leur titre et description
+Chaque commit a une reférence (du style 4e5fg5563fga5).
 
 	---git log --pretty=oneline
-	Muestra todos los commits realizados en orden cronológico inverso (solo título)
-	y referencia
+	Pareil mais montre juste leur titre et leur référence. 
 
 	---git log --pretty=format:"%h ::: %an ::: %ar ::: %s"
-	Muestra todos los commits realizados en orden cronológico inverso con el siguiente
-	formato: Referencia acotada : Nombre del responsable : fecha : título
+	Montre tous les commits réalisés en ordre chrono avec le suivant format
+	Reférence raccourcie : Nom du résponsable : date : titre
 
 	---git log -p -n
-	Siendo n unHa entero positivo, muestra los n últimos commits realizados.
-
+	Montre les n derniers commits réalisés
+	
 	---git log --since=n.weeks
-	Siendo n un entero positivo muestra los commits realizados durante las n
-	últimas semanas
+	Montre les commits réalisés pendant les n dernières semaines
 
 	---git log --since="AAAA-MM-DD"
-	Muestra los commits realizados desde la fecha indicada
+	Montre les commits réalisés depuis la dernière date
 
 	---git log --author="Nombre"
-	Muestra los commits realizados por esa persona
+	Montre les commits réalisés par cette persone
 	
 	---git log --before="AAAA-MM-DD"
 
 ---gitk 
 
-Muestra la evolución de las ramas
+Montre l'évolution des branches
+
+
 
 REMISAGE
 
@@ -183,6 +184,8 @@ Permet aussi changer de branches malgré les modifs. en cours
 	---git stash branch NomBranche
 	Crée une branche avec les modifs sauvegardées en stash
 
+
+
 REVENIR AU PASSÉ
 
 ---git checkout commit/branche
@@ -201,49 +204,50 @@ Supprime les modifs de ce commit
 	---git revert commit fichier
 	Supprime les modifs de ce commit sur ce fichier
 
----git reset HEAD nombrearchivo.formato
+---git reset HEAD nomfichier.format
 
-Borra del stage el archivo elegido 
+Supprime du stage le fichier
 
----git reset --archivo.formato
+---git reset --fichier.format
 
-Borra las modificaciones del archivo elegido
+Efface les modifs. réalisées sur le fichier
 
 ---git reset --hard
 
-Borra todas las modificaciones
+Efface toutes les modifs. réalisées
 
 ---git reset commit
 
-Borra todos los commits hechos hasta el elegido, manteniendo los
-archivos con todas las modificaciones realizadas desde entonces (aunque 
-teniendo que stagearlas). 
+Efface tous les commits réalisés jusqu'à celui qui a été choisi, en laissant
+les fichiers avec toutes les modifs réalisées depuis ce moment là (qui devront
+être stagées et commitées).
+
 
 
 REMOTE ("origin")
 
 ---git push
 
-Guarda todos los commits (cambios) realizados localmente en el servidor remoto. 
+Sauvegarde tous les commits réalisés localement dans le serveur. 
 
 ---git push origin master
 
-Almacena tu copia del repositorio (repositorio local) en el remoto.
+Comprend pas très bien la diff. avec la commande d'avant. 
 
 ---git push origin --all
 
-Écrit tout sur le serveur à distance
+Écrit tout sur le serveur à distance. 
 
 ---git remote -v
 
-Muestra la lista de servidores (o repositorios online) a los que he conectado mi repositorio
-local, junto con sus respectivas URL.
+Montre la liste des serveurs enregistrés 
 
 ---git pull URL(fetch)
 
-Hace una copia del repositorio web en el repositorio local. 
+Fait une copie locale du serveur auquel on est connectés. 
 
 ---git pull --rebase origin master
+
 
 Merge la branche master du serveur sur la master locale en incluant
 ses commits sur les tiens comme si c'était toi qui les avait fait
@@ -262,65 +266,58 @@ Supprime la branche de remote (si on l'a supprimée en local préalablement)
 
 
 
-TAGS: anotaciones que se pueden hacer a cada commit relizadoen cualquier punto de la historia
-del repositorio. 
+TAGS: notes qui peuvent être reliées à n'importe quel commit 
 
 ---git tag
 
-Muestra los nombres de todas las notas hechas hasta ahora.
+Montre les noms de toutes les tags faites
 
----git tag -a Nombre -m 'Mensaje'
+---git tag -a Nom -m 'Message'
 
-Pone una nota al último commit realizado 
+Ajoute une tag au dernier commit réalisé
 
----git show Nombre
+---git show Nom
 
-Muestra el contenido de la nota con ese nombre
+Montre le contenu de la note avec ce nom
 
----git tag -a Nombre Referencia
+---git tag -a Nom Reference
 
-Pone una nota de nombre Nombre al commit de referencia Referencia (que se puede
-consultar con git log).Aparece un editor de texto del que se sale pulsando
+Ouvre un éditeur pour ajouter une tag avec ce nom au commit de cette reférence 
 Esq --> wq --> Enter
 
-
----git push CleanCycle Nombre
-
-Almacena la nota de nombre Nombre en el repositorio web.
-
-	---git push CleanCycle --tags
-	Almacena todas las notas en el repositorio web.
+---git push Eucubot2018 Nom
 
 
-ALIAS: sirven para acortar el comando a emplear para hacer una determinada cosa.
-Por ejemplo, cambio puede ser un alias para git commit.
+Ajoute cette tags au serveur
 
----git config --global alias.Etiqueta Comando
-
-Pone el alias Etiqueta a un determinado Comando.
+	---git push Eucubot2018 --tags
+	Ajoute toutes les tags au serveur
 
 
 
-CLONAR REPOSITORIOS
-
-A)Buscamos un repositorio cualquiera en github.com (Explore). 
-
-B)Entramos en el repositorio elegido desde la página y clickamos Fork.
-
-C)Copiamos HTTPS clone URL
-
-D) volvemos a GITBASH y ponemos ---git clone URL
 
 
-TRUQUITOS
+CLONNER UN SERVEUR
+
+A)Dans la page du serveur on appuie sur fork
+
+B)On copie l'adresse HTTPS clone URL
+
+C)Retour vers GITBASH et ---git clone URL
+
+
+
+
+ASTUCES
 
 
 ---ctrl+R
 
-Permite buscar comandos anteriores: le das y escribes el comando que quieres
+Permet de chercher des commandes déjà utilisées: tu tapes et t'écris le début de celle que tu 
+recherches, il te proposera ce que t'as déjà fait avec le même début
 
----ctrl+shift+V    o    ---ctrl+shift+C
+---ctrl+shift+V    ou    ---ctrl+shift+C
 
-Pegar o Copiar
+Copier ou coller
 
 
