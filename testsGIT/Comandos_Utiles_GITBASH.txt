@@ -94,7 +94,7 @@ BRANCHES
 
 ---git branch nom
 crée une branche avec ce nom
-
+ 
 ---git merge nombranche
 
 Rassemble la branche sur celle dans laquelle on se trouve tout en faisant un commit
