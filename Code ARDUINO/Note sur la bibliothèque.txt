@@ -1,0 +1,6 @@
+-Renommer le fichier dezippé "DueTimer" (enlever "-master")
+
+-Coller le dossier dans le fichier des librairies ARDUINO
+
+-Dans le fichier DueTimer.h
+Décommenter la ligne #define USING_SERVO_LIB true
