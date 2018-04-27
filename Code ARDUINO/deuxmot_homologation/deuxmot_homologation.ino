@@ -8,7 +8,7 @@
 #define TWOPI 6.283185307179586476925286766559
 
 float rayon = 3.481; // rayon de la roue en cm - A VERIFIER!
-float dist_roues = 23.2; // distance entre les roues en cm - A VERIFIER!
+float dist_roues = 26.1; // distance entre les roues en cm - A VERIFIER!
 
 const float SOUND_SPEED = 340.0 / 1000; //vitesse du son
 const unsigned long MEASURE_TIMEOUT = 25000UL; //25ms
@@ -47,14 +47,33 @@ const int pinLED = 23; // Définition pin pour la LED
 // VCC+ capteur : marron
 // GRND capteur : vert
 
-const byte TRIG1 = 10; //capteur US 1
-const byte ECHO1 = 2;
+
+// définition des pin US
+
+const byte ECHO1 = 49; //capteur US 1 // DETECTION ROBOT 1
+const byte TRIG1 = 47;
+
+const byte ECHO2 = 53; //capteur US 2
+const byte TRIG2 = 51;
+
+const byte ECHO3 = 45; //capteur US 3
+const byte TRIG3 = 43;
+
+const byte ECHO4 = 37; //capteur US 4
+const byte TRIG4 = 35;
+
+const byte ECHO5 = 41; //capteur US 5 // DETECTION ROBOT 2
+const byte TRIG5 = 39;
 
 volatile byte state = HIGH; //bit passant à "LOW" quand l'épreuve est terminée et impliquant des break à l'entrée des fonctions de déplacement
-volatile byte state_det = LOW; //bit passant à HIGH lorsqu'on lit la valeur du capteur US associé au robot adverse
-volatile byte obstacle = LOW; //bit passant à HIGH lorqu'un obstacle est détecté
-volatile byte state_det_TOR = HIGH;
-volatile byte TOR = LOW;
+volatile byte state_det1 = LOW; //bit passant à HIGH lorsqu'on lit la valeur du capteur US associé au robot adverse
+volatile byte state_det2 = LOW; //bit passant à HIGH lorsqu'on lit la valeur du capteur US associé au robot adverse
+volatile byte obstacle1 = LOW; //bit passant à HIGH lorqu'un obstacle est détecté par le US 1
+volatile byte obstacle2 = LOW; //bit passant à HIGH lorqu'un obstacle est détecté par le US 5
+volatile byte obstacle_mur = LOW; //bit passant à HIGH lorqu'un mur est détecté par le US 3
+volatile byte obstacle_TOR = LOW; //bit passant à HIGH lorqu'un réservoir de balles est détecté par US 2 ou US 4
+volatile byte state_det_TOR_DIST = LOW;
+
 
 // PIN utilisables pour servo : 10 7 6 5 4 2
 // Définition des servomoteurs
@@ -69,6 +88,11 @@ const int pinCouleur = 25;
 // Définition couleur séléctionnée
 
 bool couleur_vert;
+
+// Définition du type de fonctionnement
+
+bool fct_TOR = false;
+bool fct_dist = false;
 
 // Définition pin pour le démarrage du robot
 const int pinJack = 27;
@@ -114,9 +138,11 @@ void setup() {
 
   // Interruptions
 
-  Timer1.attachInterrupt(isr_US_robot).start(100000); //timer pour la scrutation du capteur US (temps en microsecondes)
-  Timer6.attachInterrupt(isr_fin_epreuve).start(100000000); // fin de l'épreuve (à 100sec)
-  Timer7.attachInterrupt(isr_US_TOR).start(100000); //timer pour la scrutation des capteur US pour le tout ou rien (détection des réservoirs) (temps en microsecondes)
+  Timer1.attachInterrupt(isr_US_robot1).start(100000); //timer pour la scrutation du capteur US (temps en microsecondes)
+  //Timer6.attachInterrupt(isr_US_robot2).start(100000); //timer pour la scrutation du capteur US (temps en microsecondes)
+  //Timer7.attachInterrupt(isr_US_TOR_DIST).start(1000000); //timer pour la scrutation des capteur US pour le tout ou rien (détection des réservoirs) (temps en microsecondes)
+  //Timer.attachInterrupt(isr_fin_epreuve).start(6000000); // fin de l'épreuve (à 100sec)
+
 
   attachInterrupt(digitalPinToInterrupt(pinSensorA1), sensorAInterrupt1, CHANGE);
   attachInterrupt(digitalPinToInterrupt(pinSensorB1), sensorBInterrupt1, CHANGE);
@@ -125,11 +151,14 @@ void setup() {
 
   Serial.begin(9600);
 
+   servo_catapulte.write(113);
+   servo_bras_abeille.write(0);
   /*_____________________________________________________________________________________*/
 
 }
 
 void loop() {
+
   if (digitalRead(pinCouleur) == HIGH) // On définit la couleur du robot
   {
     couleur_vert = true;
@@ -138,81 +167,103 @@ void loop() {
     couleur_vert = false;
   }
 
-  if (couleur_vert) // On scrute pour savoir quand démarrer
+  if (digitalRead(pinJack) == LOW) // On scrute pour savoir quand démarrer
   {
-    if (digitalRead(pinCouleur) == HIGH) // On entre dans la boucle VERTE
+    if (couleur_vert) // On entre dans la boucle VERTE
     {
       digitalWrite(pinLED, HIGH); // On allume la LED
-      avancer_Kp(49); // On se dirige vers le récupérateur n°1
-      delay(1000);
-      servo_bras_droit.write(0); // On place l'aiguillage pour aller vers la catapulte
-      delay(1000);
-      salve_catapulte(); // On fait tourner le servo pour projeter les balles
-      delay(1000);
-      avancer_Kp(87); // On avance jusqu'à l'abeille
-      delay(1000);
-      servo_bras_abeille.write(0); // On déploie le bras une première fois
-      delay(1000);
-      tourner_Kp(90); // On tourne le robot pour pousser l'abeille
-      delay(1000);
-      servo_bras_abeille.write(30); // On baisse le bras une seconde fois
-      delay(1000);
-      servo_bras_droit.write(0); // On place l'aiguillage pour aller vers le bras
-      delay(1000);
-      avancer_Kp(33); // On se dirige vers le récupérateur n°2
-      delay(5000); // Dépose des balles
-      servo_bras_abeille.write(0); // On range le bras
-      delay(1000);
-      tourner_Kp(90); // On place l'avant du robot vers l'interrupteur
-      delay(1000);
-      avancer_Kp(159); // On traverse le terrain (on suit la ligne noire)
-      delay(1000);
-      tourner_Kp(-90); // On tourne pour continuer de suivre la ligne
-      delay(1000);
-      avancer_Kp(52); // On avance au niveau de l'interrupteur
-      delay(1000);
-      tourner_Kp(90); // On se place en face de l'interrupteur
-      delay(1000);
-      avancer_Kp(35); // On fonce dans l'interrupteur et c'est FINI !
+        
+        avancer_Kp(49); // On se dirige vers le récupérateur n°1
+        delay(1000);
+        //servo_bras_droit.write(0); // On place l'aiguillage pour aller vers la catapulte
+        //delay(5000);
+        //salve_catapulte(); // On fait tourner le servo pour projeter les balles
+        //servo_catapulte.write(80);
+        //delay(5000);
+        //servo_catapulte.write(113);
+        //delay(1000);
+        //avancer_Kp(87); // On avance jusqu'à l'abeille
+        //delay(5000);
+        servo_bras_abeille.write(50); // On déploie le bras une première fois (50)
+        delay(1000);
+        /*
+        delay(1000);
+        tourner_Kp(90); // On tourne le robot pour pousser l'abeille
+        delay(1000);
+        servo_bras_abeille.write(60); // On baisse le bras une seconde fois (60)
+        delay(1000);
+        servo_bras_droit.write(0); // On place l'aiguillage pour aller vers le bras
+        delay(1000);
+        avancer_Kp(33); // On se dirige vers le récupérateur n°2
+        delay(5000); // Dépose des balles
+        servo_bras_abeille.write(0); // On range le bras
+        delay(1000);
+        tourner_Kp(90); // On place l'avant du robot vers l'interrupteur
+        delay(1000);
+        avancer_Kp(159); // On traverse le terrain (on suit la ligne noire)
+        delay(1000);
+        tourner_Kp(-90); // On tourne pour continuer de suivre la ligne
+        delay(1000);
+        avancer_Kp(52); // On avance au niveau de l'interrupteur
+        delay(1000);
+        tourner_Kp(90); // On se place en face de l'interrupteur
+        delay(1000);
+        avancer_Kp(35); // On fonce dans l'interrupteur et c'est FINI !
+      */
+
+      //servo_bras_abeille.write(55);
+      //delay(5000);
+      //servo_bras_abeille.write(0);
+      // delay(5000);
+      // 113 arret servo
+      //servo_catapulte.write(80);
+      //delay(5000);
+     
+      //delay(5000);
+ 
+    //avancer_Kp(50);
+      
     }
     else // On entre dans la boucle ORANGE
     {
       digitalWrite(pinLED, LOW); // On éteint la LED
-      avancer_Kp(49); // On se dirige vers le récupérateur n°1
-      delay(1000);
-      servo_bras_gauche.write(0); // On place l'aiguillage pour aller vers la catapulte
-      delay(1000);
-      salve_catapulte(); // On fait tourner le servo pour projeter les balles
-      delay(1000);
-      avancer_Kp(87); // On avance jusqu'à l'abeille
-      delay(1000);
-      servo_bras_abeille.write(0); // On déploie le bras une première fois
-      delay(1000);
-      tourner_Kp(-90); // On tourne le robot pour pousser l'abeille
-      delay(1000);
-      servo_bras_abeille.write(30); // On baisse le bras une seconde fois
-      delay(1000);
-      servo_bras_gauche.write(0); // On place l'aiguillage pour aller vers le bras
-      delay(1000);
-      avancer_Kp(33); // On se dirige vers le récupérateur n°2
-      delay(5000); // Dépose des balles
-      servo_bras_abeille.write(0); // On range le bras
-      delay(1000);
-      tourner_Kp(-90); // On place l'avant du robot vers l'interrupteur
-      delay(1000);
-      avancer_Kp(159); // On traverse le terrain (on suit la ligne noire)
-      delay(1000);
-      tourner_Kp(90); // On tourne pour continuer de suivre la ligne
-      delay(1000);
-      avancer_Kp(52); // On avance au niveau de l'interrupteur
-      delay(1000);
-      tourner_Kp(90); // On se place en face de l'interrupteur
-      delay(1000);
-      avancer_Kp(35); // On fonce dans l'interrupteur et c'est FINI !
+      /*
+        avancer_Kp(49); // On se dirige vers le récupérateur n°1
+        delay(1000);
+        servo_bras_gauche.write(0); // On place l'aiguillage pour aller vers la catapulte
+        delay(1000);
+        salve_catapulte(); // On fait tourner le servo pour projeter les balles
+        delay(1000);
+        avancer_Kp(87); // On avance jusqu'à l'abeille
+        delay(1000);
+        servo_bras_abeille.write(0); // On déploie le bras une première fois
+        delay(1000);
+        tourner_Kp(-90); // On tourne le robot pour pousser l'abeille
+        delay(1000);
+        servo_bras_abeille.write(30); // On baisse le bras une seconde fois
+        delay(1000);
+        servo_bras_gauche.write(0); // On place l'aiguillage pour aller vers le bras
+        delay(1000);
+        avancer_Kp(33); // On se dirige vers le récupérateur n°2
+        delay(5000); // Dépose des balles
+        servo_bras_abeille.write(0); // On range le bras
+        delay(1000);
+        tourner_Kp(-90); // On place l'avant du robot vers l'interrupteur
+        delay(1000);
+        avancer_Kp(159); // On traverse le terrain (on suit la ligne noire)
+        delay(1000);
+        tourner_Kp(90); // On tourne pour continuer de suivre la ligne
+        delay(1000);
+        avancer_Kp(52); // On avance au niveau de l'interrupteur
+        delay(1000);
+        tourner_Kp(90); // On se place en face de l'interrupteur
+        delay(1000);
+        avancer_Kp(35); // On fonce dans l'interrupteur et c'est FINI !*/
+
+      //avancer_TOR();
     }
   }
-  //avancer_Kp(20);
-  //tourner_Kp(TWOPI/2);
+
 
 }
 
@@ -223,19 +274,145 @@ void loop() {
 // Définition des routines d'interruptions
 
 
-void isr_US_robot()
+void isr_US_robot1()
 {
-  state_det = HIGH;
+  state_det1 = HIGH;
 }
 
-void isr_US_TOR()
+void isr_US_robot2()
 {
-  state_det_TOR = HIGH;
+  state_det2 = HIGH;
+}
+
+void isr_US_TOR_DIST()
+{
+  state_det_TOR_DIST = HIGH;
+}
+
+void test_det_DIST(void)
+{
+
+  //Serial.println("state det tor dist");
+  //Serial.println(state_det_TOR_DIST);
+  if (state_det_TOR_DIST == HIGH)
+  {
+    digitalWrite(TRIG3, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(TRIG3, LOW);
+
+    long measure = pulseIn(ECHO3, HIGH, MEASURE_TIMEOUT);
+    float distance_mm = measure / 2.0 * SOUND_SPEED;
+
+    //Serial.println("distance=");
+    //Serial.println(distance_mm);
+
+    obstacle_mur = LOW;
+
+    if (distance_mm < 50) //ATTENTION, BIEN CHOISIR LA DISTANCE PAR RAPPORT AU MUR (50)
+    {
+      obstacle_mur = HIGH;
+    }
+
+    state_det_TOR_DIST = LOW;
+
+
+  }
 }
 
 void test_det_TOR(void)
 {
-  if (state_det_TOR == HIGH);
+  if (state_det_TOR_DIST == HIGH)
+  {
+    if (couleur_vert == true) //ATTENTION, VERIFIER QU'ON PREND BIEN LE BON CAPTEUR POUR CHAQUE COULEUR D'EQUIPE
+    {
+      digitalWrite(TRIG4, HIGH);
+      delayMicroseconds(10);
+      digitalWrite(TRIG4, LOW);
+
+      long measure = pulseIn(ECHO4, HIGH, MEASURE_TIMEOUT);
+      float distance_mm = measure / 2.0 * SOUND_SPEED;
+
+      obstacle_TOR = LOW;
+
+      if (distance_mm < 50)
+      {
+        obstacle_TOR = HIGH;
+      }
+    }
+
+    if (couleur_vert == false)
+    {
+      Serial.println("NON VERT");
+      Serial.println(couleur_vert);
+      digitalWrite(TRIG2, HIGH);
+      delayMicroseconds(10);
+      digitalWrite(TRIG2, LOW);
+
+      long measure = pulseIn(ECHO2, HIGH, MEASURE_TIMEOUT);
+      float distance_mm = measure / 2.0 * SOUND_SPEED;
+
+      obstacle_TOR = LOW;
+
+      if (distance_mm < 50)
+      {
+        obstacle_TOR = HIGH;
+      }
+
+
+    }
+    state_det_TOR_DIST = LOW;
+
+  }
+
+}
+
+
+void avancer_mur(void)
+{
+
+  digitalWrite(pinDIR1, HIGH);
+  digitalWrite(pinDIR2, LOW);
+  while (obstacle_mur == LOW)
+  {
+    test_det_DIST();
+    if (state == LOW) break;
+    digitalWrite(pinBRAKE1, LOW);
+    digitalWrite(pinBRAKE2, LOW);
+    analogWrite(pinPWM1, 255);
+    synchro_esclave(ticks1, 255);
+  }
+  analogWrite(pinPWM1, 0);
+  analogWrite(pinPWM2, 0);
+  digitalWrite(pinBRAKE1, HIGH);
+  digitalWrite(pinBRAKE2, HIGH);
+  obstacle_mur = LOW;
+  delay(2000); //???
+}
+
+void avancer_TOR(void)
+{
+
+  digitalWrite(pinDIR1, HIGH);
+  digitalWrite(pinDIR2, LOW);
+  while (obstacle_TOR == LOW)
+  {
+    test_det_TOR();
+    if (state == LOW) break;
+    digitalWrite(pinBRAKE1, LOW);
+    digitalWrite(pinBRAKE2, LOW);
+    analogWrite(pinPWM1, 255);
+    synchro_esclave(ticks1, 255);
+  }
+  analogWrite(pinPWM1, 0);
+  analogWrite(pinPWM2, 0);
+  digitalWrite(pinBRAKE1, HIGH);
+  digitalWrite(pinBRAKE2, HIGH);
+  obstacle_TOR = LOW;
+  delay(2000); //???
+}
+
+void test_det1(void) {
+  if (state_det1 == HIGH)
   {
     digitalWrite(TRIG1, HIGH);
     delayMicroseconds(10);
@@ -244,34 +421,40 @@ void test_det_TOR(void)
     long measure = pulseIn(ECHO1, HIGH, MEASURE_TIMEOUT);
     float distance_mm = measure / 2.0 * SOUND_SPEED;
 
-    TOR = LOW;
+    Serial.println("distance1 =");
+    Serial.println(distance_mm);
+    obstacle1 = LOW;
+
 
     if (distance_mm < 150)
     {
-      TOR = HIGH;
+      obstacle1 = HIGH;
     }
-    state_det_TOR = LOW;
+
+    state_det1 = LOW;
   }
 }
 
-void test_det(void) {
-  if (state_det == HIGH)
+void test_det2(void) {
+  if (state_det2 == HIGH)
   {
-    digitalWrite(TRIG1, HIGH);
+    digitalWrite(TRIG5, HIGH);
     delayMicroseconds(10);
-    digitalWrite(TRIG1, LOW);
+    digitalWrite(TRIG5, LOW);
 
-    long measure = pulseIn(ECHO1, HIGH, MEASURE_TIMEOUT);
+    long measure = pulseIn(ECHO5, HIGH, MEASURE_TIMEOUT);
     float distance_mm = measure / 2.0 * SOUND_SPEED;
 
-    obstacle = LOW;
+    Serial.println("distance2 =");
+    Serial.println(distance_mm);
+    obstacle2 = LOW;
 
     if (distance_mm < 150)
     {
-      obstacle = HIGH;
+      obstacle2 = HIGH;
     }
 
-    state_det = LOW;
+    state_det2 = LOW;
   }
 }
 
@@ -357,8 +540,13 @@ void avancer_Kp(float distance_cm)
   while (abs(distance_ticks) - abs(ticks1 - ticks1_0) > 0)
   {
     if (state == LOW) break; // fin de l'épreuve
-    test_det();
-    if (obstacle == LOW)
+    test_det1();
+    test_det2();
+    //Serial.println("obstacle1 = ");
+    //Serial.println(obstacle1);
+    //Serial.println("obstacle2 = ");
+    //Serial.println(obstacle2);
+    if (obstacle1 == LOW && obstacle2 == LOW)
     {
       digitalWrite(pinBRAKE1, LOW);
       digitalWrite(pinBRAKE2, LOW);
@@ -369,7 +557,6 @@ void avancer_Kp(float distance_cm)
       {
         analogWrite(pinPWM1, 255);
         synchro_esclave(ticks1, 255);
-        Serial.println("IF SAT");
 
       }
       else
@@ -377,14 +564,12 @@ void avancer_Kp(float distance_cm)
         int consigne = Kp * erreur + PWM_min;
         analogWrite(pinPWM1, consigne);
         synchro_esclave(ticks1, consigne);
-        Serial.println("IF NOT SAT");
       }
 
     }
 
-    if (obstacle == HIGH)
+    if (obstacle1 == HIGH || obstacle2 == HIGH)
     {
-      Serial.println("IF NOT SAT 5");
       analogWrite(pinPWM1, 0);
       analogWrite(pinPWM2, 0);
       digitalWrite(pinBRAKE1, HIGH);
@@ -419,8 +604,9 @@ void tourner_Kp(float angle)
     while (abs(distance_ticks) - abs(ticks1 - ticks1_0) > 0)
     {
       if (state == LOW) break; // fin de l'épreuve
-      test_det();
-      if (obstacle == LOW)
+      test_det1();
+      test_det2();
+      if (obstacle1 == LOW && obstacle2 == LOW)
       {
         int erreur = abs(distance_ticks) - abs(ticks1 - ticks1_0);
         if (Kp * erreur > 255)
@@ -434,7 +620,7 @@ void tourner_Kp(float angle)
           synchro_esclave(ticks1, Kp * erreur + PWM_min);
         }
       }
-      if (obstacle == HIGH)
+      if (obstacle1 == HIGH || obstacle2 == HIGH)
       {
         analogWrite(pinPWM1, 0);
         analogWrite(pinPWM2, 0);
@@ -453,8 +639,9 @@ void tourner_Kp(float angle)
     while (abs(distance_ticks) - abs(ticks1 - ticks1_0) > 0)
     {
       if (state == LOW) break; // fin de l'épreuve
-      test_det();
-      if (obstacle == LOW)
+      test_det1();
+      test_det2();
+      if (obstacle1 == LOW && obstacle2 == LOW)
       {
         int erreur = abs(distance_ticks) - abs(ticks1 - ticks1_0);
         if (Kp * erreur > 255)
@@ -468,7 +655,7 @@ void tourner_Kp(float angle)
           synchro_esclave(ticks1, Kp * erreur + PWM_min);
         }
       }
-      if (obstacle == HIGH)
+      if (obstacle1 == HIGH || obstacle2 == HIGH)
       {
         analogWrite(pinPWM1, 0);
         analogWrite(pinPWM2, 0);
@@ -477,21 +664,6 @@ void tourner_Kp(float angle)
       }
     }
 
-  }
-  analogWrite(pinPWM1, 0);
-  analogWrite(pinPWM2, 0);
-  digitalWrite(pinBRAKE1, HIGH);
-  digitalWrite(pinBRAKE2, HIGH);
-}
-
-void avancer_TOR(void)
-{
-  while (TOR = LOW)
-  {
-    if (state == LOW) break; // fin de l'épreuve
-    test_det_TOR();
-    analogWrite(pinPWM1, 255);
-    synchro_esclave(ticks1, 255);
   }
   analogWrite(pinPWM1, 0);
   analogWrite(pinPWM2, 0);
@@ -511,4 +683,10 @@ void salve_catapulte()
   }
 }
 
+// BORNES US : gauche masse / TRIG / ECHO / droite 5V
 
+// BORNE 1 : 53 / 51 (pour TRIG et ECHO) (tout à gauche) (US TOR 1)
+// BORNE 2 : 49 / 47                                     (US ROBOT ADVERSE 1)
+// BORNE 3 : 45 / 43                                     (US DIST MUR)
+// BORNE 4 : 41 / 39                                     (US ROBOT ADVERSE 2)
+// BORNE 5 : 37 / 35 (tout à droite)                     (US ROBOT TOR 2)
