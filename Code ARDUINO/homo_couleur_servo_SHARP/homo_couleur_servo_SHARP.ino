@@ -1,6 +1,5 @@
 #include <DueTimer.h> // Bibliothèque modifiée (pour compatibilité avec Servo): Timer0, 2,3,4 and 5 ne sont pas utilisables
 #include <Servo.h>
-#include <RunningAverage.h>
 #define TWOPI 6.283185307179586476925286766559 //2*PI
 float rayon = 3.481; // rayon de la roue en cm - A VERIFIER!
 float dist_roues = 26.1; // distance entre les roues en cm - A VERIFIER!
@@ -27,7 +26,9 @@ int echantillon[nEchantillons];    // un tableau pour stocker les échantillons 
 int indice = 0;                    // l'indice de l'échantillon courant
 float total = 0;                   // la somme des échantillons mémorisés
 float moyenne = 0;                 // la moyenne des échantillons mémorisés
+int delta_esclave = 9;
 
+/*
 const int pinDIR1 = 12; //choix du sens de rotation du moteur 1 (HIGH / LOW)
 const int pinPWM1 = 3; //choix de la vitesse de rotation (0 à 255)
 const int pinBRAKE1 = 9; //pin sur HIGH pour activer les freins (HIGH / LOW)
@@ -39,6 +40,20 @@ const int pinPWM2 = 11;
 const int pinBRAKE2 = 8;
 const int pinSensorA2 = 34; //bleu  (5)
 const int pinSensorB2 = 32; //violet  (6)
+*/
+// TEST 
+const int pinDIR2 = 12; //choix du sens de rotation du moteur 1 (HIGH / LOW)
+const int pinPWM2 = 3; //choix de la vitesse de rotation (0 à 255)
+const int pinBRAKE2 = 9; //pin sur HIGH pour activer les freins (HIGH / LOW)
+const int pinSensorA2 = 50; //bleu  (2)
+const int pinSensorB2 = 52; //violet   (4)
+
+const int pinDIR1 = 13; //choix du sens de rotation du moteur 2
+const int pinPWM1 = 11;
+const int pinBRAKE1 = 8;
+const int pinSensorA1 = 34; //bleu  (5)
+const int pinSensorB1 = 32; //violet  (6)
+// TEST
 
 Servo servo_catapulte;
 Servo servo_bras_droit;
@@ -81,8 +96,10 @@ void setup() {
 
   Timer1.attachInterrupt(isr_US_robot).start(100000);
   int duree_epreuve_en_sec = 100;
-  Timer6.attachInterrupt(isr_fin_epreuve).start(duree_epreuve_en_sec*1000000); // fin de l'épreuve (à 10sec)
+  Timer6.attachInterrupt(isr_fin_epreuve).start(duree_epreuve_en_sec * 1000000); // fin de l'épreuve (à 10sec)
 
+  servo_catapulte.write(10);
+  servo_bras_abeille.write(80); // poisition basse : 0 / position haute : 80
   //________________________________________________________
 
   digitalWrite(pinDIR1, HIGH);
@@ -90,7 +107,7 @@ void setup() {
 }
 
 void loop() {
-    if (digitalRead(pinCouleur) == HIGH) // On définit la couleur du robot
+  if (digitalRead(pinCouleur) == HIGH) // On définit la couleur du robot
   {
     couleur_vert = true;
   }
@@ -103,17 +120,40 @@ void loop() {
     if (couleur_vert) // On entre dans la boucle VERTE
     {
       digitalWrite(pinLED, HIGH); // On allume la LED
-      avancer_Kp(10000);
+      
+      analogWrite(pinPWM1, 180);
+      analogWrite(pinPWM2, 180);
+
+      //ABEILLE
+      /*
+      Serial.println(1);
+      avancer_mur();
+      Serial.println(2);
+      delay(1000);
+      servo_bras_abeille.write(20);
+      delay(1000);
+      tourner_Kp(TWOPI/4);
+      delay(10000000);
+      */
+      
     }
     else // On entre dans la boucle ORANGE
     {
       digitalWrite(pinLED, LOW); // On éteint la LED
-     // LOOP
+      // LOOP
     }
   }
 }
 
 //_________________________________________________________
+
+void synchro_esclave(int ticks_maitre, int val_pwm)
+{
+  if (abs(ticks_maitre - ticks1_0) > abs(ticks2 - ticks2_0))
+  {
+    analogWrite(pinPWM2, val_pwm);
+  }
+}
 
 void isr_fin_epreuve()
 {
@@ -163,18 +203,22 @@ void sensorBInterrupt2()
 void test_det(void) {
   if (state_det == HIGH)
   {
-    
+
     float voltage_sharp = analogRead(sharp);
 
-    float distance = -3.0*pow(10,-7)*pow(voltage_sharp,3) + 0.0006*pow(voltage_sharp,2) - 0.398*voltage_sharp +89.455;
+    // CAPTEUR IR 1
+    float distance = -3.0 * pow(10, -7) * pow(voltage_sharp, 3) + 0.0006 * pow(voltage_sharp, 2) - 0.398 * voltage_sharp + 89.455;
 
-    Serial.println("distance");
-    Serial.println(distance);
-    
+    // CAPTEUR IR 2
+    //float distance = -1*pow(10,-7)*pow(voltage_sharp,3) + 0.0003*pow(voltage_sharp,2) - 0.2612*voltage_sharp + 82.484;
+
+    //Serial.println("distance");
+    //Serial.println(distance);
+
     obstacle = LOW;
 
 
-    if (distance < 20)
+    if (distance < 35)
     {
       obstacle = HIGH;
     }
@@ -193,14 +237,14 @@ void avancer_Kp(float distance_cm)
 
   if (distance_cm > 0)
   {
-    digitalWrite(pinDIR1, LOW); // à vérifier, il faut être sûr d'avancer et non pas de reculer!
-    digitalWrite(pinDIR2, HIGH);
+    digitalWrite(pinDIR1, HIGH); // à vérifier, il faut être sûr d'avancer et non pas de reculer!
+    digitalWrite(pinDIR2, LOW);
   }
 
   else
   {
-    digitalWrite(pinDIR1, HIGH); // à vérifier, il faut être sûr d'avancer et non pas de reculer!
-    digitalWrite(pinDIR2, LOW);
+    digitalWrite(pinDIR1, LOW); // à vérifier, il faut être sûr d'avancer et non pas de reculer!
+    digitalWrite(pinDIR2, HIGH);
   }
 
   int distance_ticks = floor((distance_cm) * 636.0 / (TWOPI * rayon)) ;
@@ -213,37 +257,37 @@ void avancer_Kp(float distance_cm)
     test_det();
     if (obstacle == LOW)
     {
-    digitalWrite(pinBRAKE1, LOW);
-    digitalWrite(pinBRAKE2, LOW);
+      digitalWrite(pinBRAKE1, LOW);
+      digitalWrite(pinBRAKE2, LOW);
 
-    int erreur = abs(distance_ticks) - abs(ticks1 - ticks1_0);
+      int erreur = abs(distance_ticks) - abs(ticks1 - ticks1_0);
 
-    //Serial.println("erreur");
-    //Serial.println(erreur);
+      //Serial.println("erreur");
+      //Serial.println(erreur);
 
-    if (Kp * erreur > 255)
-    {
-      analogWrite(pinPWM1, 255);
-      analogWrite(pinPWM2, 255);
-      //synchro_esclave(ticks1, 255);
+      if (Kp * erreur > 255)
+      {
+        analogWrite(pinPWM1, 255);
+        //analogWrite(pinPWM2, 255);
+        synchro_esclave(ticks1, 255 - delta_esclave);
 
-    }
-    else
-    {
-      int consigne = Kp * erreur + PWMmin; // (+PWMmin)
-      analogWrite(pinPWM1, consigne);
-      analogWrite(pinPWM2, consigne);
-      //synchro_esclave(ticks1, consigne);
-    }
+      }
+      else
+      {
+        int consigne = Kp * erreur + PWMmin; // (+PWMmin)
+        analogWrite(pinPWM1, consigne);
+        //analogWrite(pinPWM2, consigne);
+        synchro_esclave(ticks1, consigne - delta_esclave);
+      }
 
     }
 
     if (obstacle == HIGH)
     {
-    analogWrite(pinPWM1, 0);
-    analogWrite(pinPWM2, 0);
-    digitalWrite(pinBRAKE1, HIGH);
-    digitalWrite(pinBRAKE2, HIGH);
+      analogWrite(pinPWM1, 0);
+      analogWrite(pinPWM2, 0);
+      digitalWrite(pinBRAKE1, HIGH);
+      digitalWrite(pinBRAKE2, HIGH);
     }
 
   }
@@ -257,6 +301,128 @@ void isr_US_robot()
 {
   state_det = HIGH;
 }
+
+// TOURNER AVEC UNE CORRECTION PROPORTIONNELLE
+
+void tourner_Kp(float angle)
+{
+  digitalWrite(pinBRAKE1, LOW);
+  digitalWrite(pinBRAKE2, LOW);
+
+  float distance_cm = abs(angle) * dist_roues / 2;
+  int distance_ticks = floor(distance_cm / (TWOPI * rayon) * 636.0);
+  ticks1_0 = ticks1;
+  ticks2_0 = ticks2;
+
+  if (angle < 0)
+  {
+    digitalWrite(pinDIR1, LOW); // à vérifier, il faut être sûr d'avancer et non pas de reculer!
+    digitalWrite(pinDIR2, LOW);
+    while (abs(distance_ticks) - abs(ticks1 - ticks1_0) > 0)
+    {
+      if (epreuve_en_cours == LOW) break; // fin de l'épreuve
+      //test_det();
+      if (obstacle == LOW)
+      {
+        int erreur = abs(distance_ticks) - abs(ticks1 - ticks1_0);
+        if (Kp * erreur > 255)
+        {
+          analogWrite(pinPWM1, 255);
+          analogWrite(pinPWM2, 255 - delta_esclave);
+          //synchro_esclave(ticks1, 255 - delta_esclave);
+        }
+        else
+        {
+          analogWrite(pinPWM1, Kp * erreur + PWMmin);
+          analogWrite(pinPWM2, Kp * erreur + PWMmin - delta_esclave);
+          //synchro_esclave(ticks1, Kp * erreur + PWMmin - delta_esclave);
+        }
+      }
+      if (obstacle == HIGH)
+      {
+        analogWrite(pinPWM1, 0);
+        analogWrite(pinPWM2, 0);
+        digitalWrite(pinBRAKE1, HIGH);
+        digitalWrite(pinBRAKE2, HIGH);
+      }
+
+    }
+  }
+
+  if (angle > 0)
+  {
+
+    digitalWrite(pinDIR1, HIGH);
+    digitalWrite(pinDIR2, HIGH);
+    while (abs(distance_ticks) - abs(ticks1 - ticks1_0) > 0)
+    {
+      if (epreuve_en_cours == LOW) break; // fin de l'épreuve
+      //test_det();
+      if (obstacle == LOW)
+      {
+        int erreur = abs(distance_ticks) - abs(ticks1 - ticks1_0);
+        if (Kp * erreur > 255)
+        {
+          analogWrite(pinPWM1, 255);
+          analogWrite(pinPWM2, 255 - delta_esclave);
+          //synchro_esclave(ticks1, 255 - delta-esclave);
+        }
+        else
+        {
+          analogWrite(pinPWM1, Kp * erreur + PWMmin);
+          analogWrite(pinPWM2, Kp * erreur + PWMmin - delta_esclave);
+          //synchro_esclave(ticks1, Kp * erreur + PWMmin - delta_esclave);
+        }
+      }
+      if (obstacle == HIGH)
+      {
+        analogWrite(pinPWM1, 0);
+        analogWrite(pinPWM2, 0);
+        digitalWrite(pinBRAKE1, HIGH);
+        digitalWrite(pinBRAKE2, HIGH);
+      }
+    }
+  }
+  analogWrite(pinPWM1, 0);
+  analogWrite(pinPWM2, 0);
+  digitalWrite(pinBRAKE1, HIGH);
+  digitalWrite(pinBRAKE2, HIGH);
+}
+
+void avancer_mur(void)
+{
+  digitalWrite(pinDIR1, HIGH);
+  digitalWrite(pinDIR2, LOW);
+  volatile byte obstacle_mur = LOW;
+  while (obstacle_mur == LOW)
+  {
+    if (epreuve_en_cours == LOW) break;
+
+    float voltage_sharp = analogRead(sharp);
+
+    // CAPTEUR IR 1
+    float distance_mur = -3.0 * pow(10, -7) * pow(voltage_sharp, 3) + 0.0006 * pow(voltage_sharp, 2) - 0.398 * voltage_sharp + 89.455;
+
+    Serial.println(distance_mur);
+    
+    if (distance_mur < 35 && distance_mur > 8)
+    {
+      obstacle_mur = HIGH;
+    }
+    
+    digitalWrite(pinBRAKE1, LOW);
+    digitalWrite(pinBRAKE2, LOW);
+    analogWrite(pinPWM1, 255);
+    synchro_esclave(ticks1, 255 - delta_esclave);
+  }
+  analogWrite(pinPWM1, 0);
+  analogWrite(pinPWM2, 0);
+  digitalWrite(pinBRAKE1, HIGH);
+  digitalWrite(pinBRAKE2, HIGH);
+  obstacle_mur = LOW;
+  //delay(2000); //???
+}
+
 
 // http://arduino.blaisepascal.fr/index.php/2016/02/06/lisser-un-signal-analogique/
 // BIBLIO SHARP
