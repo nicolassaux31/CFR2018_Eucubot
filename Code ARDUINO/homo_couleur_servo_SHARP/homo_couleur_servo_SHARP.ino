@@ -401,11 +401,20 @@ void avancer_mur(void)
     float voltage_sharp = analogRead(sharp);
 
     // CAPTEUR IR 1
-    float distance_mur = -3.0 * pow(10, -7) * pow(voltage_sharp, 3) + 0.0006 * pow(voltage_sharp, 2) - 0.398 * voltage_sharp + 89.455;
-
-    Serial.println(distance_mur);
-    
-    if (distance_mur < 35 && distance_mur > 8)
+    static int compteur_dist=0;
+    float distance_mur1=60;
+    float distance_mur2=60;
+    if (compteur_dist=0)
+    {
+    distance_mur1 = -3.0 * pow(10, -7) * pow(voltage_sharp, 3) + 0.0006 * pow(voltage_sharp, 2) - 0.398 * voltage_sharp + 89.455;
+    compteur_dist++;
+    }
+    else{
+    distance_mur2 = -3.0 * pow(10, -7) * pow(voltage_sharp, 3) + 0.0006 * pow(voltage_sharp, 2) - 0.398 * voltage_sharp + 89.455;
+    compteur_dist=0;
+    }
+    Serial.println(distance_mur1);
+    if (distance_mur1 < 35 && distance_mur2<35)
     {
       obstacle_mur = HIGH;
     }
