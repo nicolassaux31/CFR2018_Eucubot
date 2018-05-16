@@ -165,7 +165,7 @@ void loop() {
       digitalWrite(pinDIR1, LOW);
       digitalWrite(pinDIR2, HIGH);
       obstacle = LOW;
-      avancer_Kp(90);
+      avancer_Kp(85);
       delay(1000);
       //on tourne vers les blocs
       ang_deg = -80; //SIGNE MOINS
@@ -218,9 +218,30 @@ void loop() {
       delay(1000);
       }
       //on tourne pour la pousser
-      ang_deg = 720; //SIGNE PLUS 60
+      ang_deg = 770; //SIGNE PLUS 60
       ang_rad = ang_deg * TWOPI / 360;
       tourner_Kp(ang_rad);
+      delay(500);
+      ang_deg = 20; //SIGNE PLUS 60
+      ang_rad = ang_deg * TWOPI / 360;
+      tourner_Kp(ang_rad);
+      delay(500);
+      servo_bras_abeille.write(80);
+      delay(500);
+      avancer_Kp(55); // avancer après avoir descendu l'abeille
+      delay(1000);
+      ang_deg = 30;
+      ang_rad = ang_deg * TWOPI / 360;
+      tourner_Kp(ang_rad);// tourner pour suivre ligne du milieu
+      delay(1000);
+      avancer_Kp(190); // avancer pour aller plus loin que les balles
+      delay(1000);
+      avancer_Kp(-5);
+      delay(1000);
+      ang_deg = -45;
+      ang_rad = ang_deg * TWOPI / 360;
+      tourner_Kp(ang_rad);
+      delay(1000);
       delay(1000000);
       
     }
@@ -233,7 +254,7 @@ void loop() {
       delay(2000);
       //on tourne vers l'interrupteur
       Serial.println(timeout);
-      float ang_deg = -95;
+      float ang_deg = -90;
       float ang_rad = ang_deg * TWOPI / 360;
       obstacle = LOW;
       tourner_Kp(ang_rad);
@@ -313,6 +334,21 @@ void loop() {
       ang_deg = -720;
       ang_rad = ang_deg * TWOPI / 360;
       tourner_Kp(ang_rad);
+      delay(500);
+      ang_deg = -20;
+      ang_rad = ang_deg * TWOPI / 360;
+      tourner_Kp(ang_rad);
+      delay(500);
+      servo_bras_abeille.write(80);
+      delay(500);
+      avancer_Kp(68); // avancer après avoir descendu l'abeille
+      delay(1000);
+      ang_deg = -73;
+      ang_rad = ang_deg * TWOPI / 360;
+      tourner_Kp(ang_rad);// tourner pour suivre ligne du milieu
+      delay(1000);
+      avancer_Kp(190); // avancer pour aller plus loin que les balles
+      delay(1000);
       delay(1000000);
       
     }
@@ -414,6 +450,8 @@ void test_det(void) { // fonction de détection, elle scrute le capteur IR pour 
 
 void avancer_Kp(float distance_cm) // fait avancer le robot tout en scrutant la présence du robot adverse
 {
+  timeout = LOW;
+  Timer6.attachInterrupt(isr_timeout).start(10000000);
   digitalWrite(pinBRAKE1, LOW);
   digitalWrite(pinBRAKE2, LOW);
 
@@ -435,6 +473,7 @@ void avancer_Kp(float distance_cm) // fait avancer le robot tout en scrutant la 
 
   while (abs(distance_ticks) - abs(ticks1 - ticks1_0) > 0)
   {
+    if (timeout) break;
     if (epreuve_en_cours == LOW) break; // fin de l'épreuve
     test_det(); // on scrute ici le capteur IR
     if (obstacle == LOW)
@@ -465,7 +504,7 @@ void avancer_Kp(float distance_cm) // fait avancer le robot tout en scrutant la 
         //analogWrite(pinPWM1, 255);
         //analogWrite(pinPWM2, 255);
       }
-
+      
     }
 
     if (obstacle == HIGH) // si un robot adverse est détecté, on s'arrête et on actionne les freins
@@ -477,6 +516,7 @@ void avancer_Kp(float distance_cm) // fait avancer le robot tout en scrutant la 
     }
 
   }
+  timeout = LOW;
   analogWrite(pinPWM1, 0); // une fois la distance voulue parcourue, on s'arrête et on actionne les freins
   analogWrite(pinPWM2, 0);
   digitalWrite(pinBRAKE1, HIGH);
